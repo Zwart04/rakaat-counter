@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Penghitung Rakaat v5.0</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #000; color: #fff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            height: 100vh; overflow: hidden;
+            user-select: none; -webkit-user-select: none;
+        }
+
+        /* --- HALAMAN SETUP (AWAL) --- */
+        #setupScreen {
+            display: flex; flex-direction: column;
+            align-items: center; gap: 20px; z-index: 50;
+        }
+        .setup-title { font-size: 24px; color: #ffc107; font-weight: bold; margin-bottom: 20px; }
+        .setup-btn {
+            width: 250px; padding: 15px; font-size: 18px; font-weight: bold;
+            background: #333; color: #fff;
+            border: 2px solid #555; border-radius: 12px; cursor: pointer;
+        }
+        #startBtn {
+            background: #28a745; border-color: #28a745; margin-top: 20px;
+            font-size: 22px; padding: 20px;
+        }
+
+        /* --- HALAMAN APLIKASI UTAMA --- */
+        #appScreen {
+            display: none; flex-direction: column;
+            align-items: center; width: 100%;
+        }
+        #rakaat { font-size: 50vw; font-weight: bold; line-height: 1; margin: 10px 0; }
+        #label { font-size: 6vw; color: #aaa; letter-spacing: 2px; }
+        #status { font-size: 8vw; color: #ffc107; font-weight: bold; }
+        
+        #resetBtn {
+            position: fixed; bottom: 20px;
+            padding: 12px 30px; font-size: 16px;
+            background: #dc3545; color: #fff;
+            border: none; border-radius: 8px; cursor: pointer;
+            z-index: 20;
+        }
+
+        video, canvas { display: none; }
+    </style>
+</head>
+<body>
+
+    <!-- HALAMAN SETUP (HANYA MUNCUL DI AWAL) -->
+    <div id="setupScreen">
+        <div class="setup-title">Pengaturan Penghitung Rakaat</div>
+        
+        <button id="muteBtn" class="setup-btn">🔊 Suara: AKTIF</button>
+        <button id="genderBtn" class="setup-btn">👩 Suara: PEREMPUAN</button>
+        
+        <button id="startBtn" class="setup-btn">Mulai Sholat</button>
+    </div>
+
+    <!-- HALAMAN APLIKASI (MUNCUL SAAT SHOLAT) -->
+    <div id="appScreen">
+        <div id="label">RAKAAT</div>
+        <div id="rakaat">1</div>
+        <div id="status">Sujud: 0</div>
+        
+        <button id="resetBtn">Reset Hitungan</button>
+    </div>
+
+    <video id="video" autoplay playsinline></video>
+    <canvas id="canvas"></canvas>
+
+    <script>
+        // DOM Elements
+        const setupScreen = document.getElementById('setupScreen');
+        const appScreen = document.getElementById('appScreen');
+        const startBtn = document.getElementById('startBtn');
+        const muteBtn = document.getElementById('muteBtn');
+        const genderBtn = document.getElementById('genderBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const rakaatTeks = document.getElementById('rakaat');
+        const statusTeks = document.getElementById('status');
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        // State
+        let sujudCount = 0;
+        let rakaatCount = 1;
+        let isDark = false;
+        let isMuted = false;
+        let voiceGender = "female"; 
+        let wakeLock = null;
+
+        // --- SISTEM SUARA (TEXT-TO-SPEECH) ---
+        let voices = [];
+        function loadVoices() {
+            voices = window.speechSynthesis.getVoices();
+        }
+        window.speechSynthesis.onvoiceschanged = loadVoices;
+        loadVoices();
+
+        function bicara(teks) {
+            if (isMuted) return;
+            window.speechSynthesis.cancel(); // Hentikan suara yang numpuk
+
+            const msg = new SpeechSynthesisUtterance(teks);
+            msg.lang = 'id-ID';
+            msg.rate = 0.85; // Kecepatan ideal agar jelas
+            
+            // Cari suara Google Bahasa Indonesia jika ada
+            const idVoices = voices.filter(v => v.lang.includes('id') || v.lang.includes('in'));
+            
+            if (voiceGender === "female") {
+                // Konfigurasi suara perempuan alami
+                if (idVoices.length > 0) msg.voice = idVoices[0];
+                msg.pitch = 1.1; 
+            } else {
+                // Konfigurasi suara laki-laki (pitch lebih rendah dan pelan)
+                // Jika mesin TTS punya lebih dari 1 suara (misal ada versi laki-laki asli), pakai itu
+                if (idVoices.length > 1) {
+                    msg.voice = idVoices[1];
+                    msg.pitch = 1.0;
+                } else if (idVoices.length > 0) {
+                    msg.voice = idVoices[0];
+                    msg.pitch = 0.6; // Simulasikan suara laki-laki dari suara perempuan
+                }
+            }
+
+            window.speechSynthesis.speak(msg);
+        }
+
+        function getar() {
+            if (navigator.vibrate) navigator.vibrate([150, 80, 150]);
+        }
+
+        // --- PENGATURAN AWAL (SETUP) ---
+        muteBtn.addEventListener('click', () => {
+            isMuted = !isMuted;
+            if (isMuted) {
+                muteBtn.innerText = "🔇 Suara: MATI";
+                muteBtn.style.background = "#555";
+            } else {
+                muteBtn.innerText = "🔊 Suara: AKTIF";
+                muteBtn.style.background = "#333";
+                bicara("Suara diaktifkan");
+            }
+        });
+
+        genderBtn.addEventListener('click', () => {
+            if (voiceGender === "female") {
+                voiceGender = "male";
+                genderBtn.innerText = "👨 Suara: LAKI-LAKI";
+                bicara("Suara laki laki");
+            } else {
+                voiceGender = "female";
+                genderBtn.innerText = "👩 Suara: PEREMPUAN";
+                bicara("Suara perempuan");
+            }
+        });
+
+        // --- MULAI SHOLAT ---
+        async function startApp() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
+                video.srcObject = stream;
+
+                // Mode Layar Penuh
+                if (document.documentElement.requestFullscreen) {
+                    document.documentElement.requestFullscreen();
+                }
+
+                // Cegah layar mati
+                try {
+                    if ('wakeLock' in navigator) wakeLock = await navigator.wakeLock.request('screen');
+                } catch(e) {}
+
+                // Sembunyikan setup, tampilkan aplikasi
+                setupScreen.style.display = 'none';
+                appScreen.style.display = 'flex';
+
+                video.onloadedmetadata = () => {
+                    canvas.width = video.videoWidth;
+                    canvas.height = video.videoHeight;
+                    requestAnimationFrame(detect);
+                };
+
+                bicara("Mulai sholat");
+            } catch(e) {
+                alert("Gagal mengakses kamera. Pastikan izin kamera diberikan. Error: " + e.message);
+            }
+        }
+
+        startBtn.addEventListener('click', startApp);
+
+        // --- DETEKSI BAYANGAN SUJUD ---
+        function detect() {
+            if (video.paused || video.ended) return;
+
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            const data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+
+            let total = 0, count = 0;
+            for (let i = 0; i < data.length; i += 80) { // Sampling agar tidak berat
+                total += (data[i] + data[i+1] + data[i+2]) / 3;
+                count++;
+            }
+            const avg = total / count;
+
+            if (avg < 25 && !isDark) {
+                isDark = true;
+                setTimeout(hitungSujud, 800); // Jeda agar deteksi stabil
+            } else if (avg > 45 && isDark) {
+                isDark = false;
+            }
+
+            setTimeout(() => requestAnimationFrame(detect), 300);
+        }
+
+        function hitungSujud() {
+            sujudCount++;
+            getar();
+            statusTeks.innerText = "Sujud: " + sujudCount;
+
+            if (sujudCount === 1) {
+                bicara("Sujud satu");
+            } else if (sujudCount >= 2) {
+                rakaatCount++;
+                rakaatTeks.innerText = rakaatCount;
+                bicara("Rakaat " + rakaatCount);
+                
+                // Reset hitungan sujud
+                sujudCount = 0;
+                setTimeout(() => {
+                    statusTeks.innerText = "Sujud: 0";
+                }, 1000);
+            }
+        }
+
+        // --- RESET ---
+        resetBtn.addEventListener('click', () => {
+            sujudCount = 0;
+            rakaatCount = 1;
+            rakaatTeks.innerText = "1";
+            statusTeks.innerText = "Sujud: 0";
+            bicara("Hitungan direset");
+        });
+    </script>
+</body>
+</html>
