@@ -1,10 +1,10 @@
-# 🕋 Rakaat Counter: Solusi Sholat Khusyuk
+# 🕋 Rakaat Counter: Solusi buat yang suka lupa rakaat sholat
 
 ![Status](https://img.shields.io/badge/version-7.3-brightgreen)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 ![Platform](https://img.shields.io/badge/platform-Web-orange)
 
-Aplikasi web pendeteksi rakaat & sujud otomatis menggunakan sensor bayangan kamera depan. **Tanpa instalasi & 100% offline.**
+Aplikasi web pendeteksi rakaat & sujud otomatis menggunakan sensor cahaya kamera depan. **Tanpa instalasi & 100% offline.**
 
 > 🚀 **[Coba Demo Live Disini!](https://zwart04.github.io/rakaat-counter/)**
 
@@ -22,7 +22,7 @@ Aplikasi web pendeteksi rakaat & sujud otomatis menggunakan sensor bayangan kame
 | 📸 **Sensor Cahaya** | Kamera depan mendeteksi bayangan tubuh saat sujud |
 | 🗣️ **Panduan Suara** | "Sujud satu", "Rakaat X" — pilihan suara Perempuan / Laki-Laki |
 | 💡 **Cek Pencahayaan** | Indikator real-time untuk memastikan cahaya ruangan cukup optimal |
-| 🔒 **100% Privat** | Kamera hanya diproses di browser, tidak ada rekaman / upload |
+| 🔒 **100% Privat** | Kamera hanya diproses di browser lokal HP, tidak ada perekaman atau pengiriman data ke internet |
 | 📱 **AMOLED Mode** | Desain gelap murni yang hemat baterai dan nyaman di mata |
 | 📳 **Getaran** | Vibrate setiap kali sujud / rakaat terdeteksi |
 
