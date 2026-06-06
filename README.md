@@ -1,4 +1,4 @@
-# 🕋 Rakaat Counter: Solusi Sholat Khusyuk
+# 🕋 Rakaat Counter: Solusi buat yang suka lupa rakaat sholat
 
 Aplikasi web pendeteksi rakaat & sujud otomatis menggunakan sensor bayangan kamera depan. **Tanpa instalasi & 100% offline.**
 
