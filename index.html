@@ -215,6 +215,7 @@
 
         // Start
         async function startApp() {
+            if (!confirm('🔔 Pengingat sebelum sholat:\n\n✈️ Aktifkan Mode Pesawat\n🔕 Aktifkan Jangan Ganggu (Do Not Disturb)\n\nIni mencegah notifikasi & panggilan masuk.\nKlik OK untuk mulai sholat.')) return;
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
                 video.srcObject = stream;
