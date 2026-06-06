@@ -43,8 +43,8 @@ Gunakan di tempat dengan pencahayaan **cukup terang** (bukan silau). Cek level p
 3. Pilih suara pemandu (Perempuan / Laki-Laki)
 4. (Opsional) Tekan **Cek Pencahayaan** untuk memastikan cahaya cukup
 5. Tekan **MULAI SHOLAT**
-6. Letakkan HP di samping sajadah (sejajar posisi kepala saat sujud)
-7. Selesai → tekan **RESET** untuk hitungan berikutnya
+6. Letakkan HP di atas sajadah (sejajar posisi badan/dekat kaki saat sujud)
+7. Selesai → tekan **RESET** untuk reset hitungan rakaatnya
 
 ---
 
