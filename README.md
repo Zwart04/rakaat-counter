@@ -10,6 +10,8 @@ Pernahkah Anda merasa ragu sudah rakaat ke berapa saat sedang sholat sendirian? 
 
 ![Cara Penggunaan](https://raw.githubusercontent.com/Zwart04/rakaat-counter/main/demo.png)
 
+> *Catatan:* Gambar di atas hanyalah contoh tampilan. Saat Anda membuka link demo di atas, aplikasi akan meminta akses kamera dan menampilkan antarmuka sebenarnya.
+
 ---
 
 ## 💡 Mengapa Menggunakan Rakaat Counter?
