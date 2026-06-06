@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Rakaat Counter v7.1</title>
+    <title>Rakaat Counter</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -13,146 +13,147 @@
             font-family: 'Inter', sans-serif;
             display: flex; flex-direction: column;
             justify-content: center; align-items: center;
-            height: 100vh; overflow: hidden;
+            min-height: 100vh; overflow: hidden;
             user-select: none; -webkit-user-select: none;
             -webkit-tap-highlight-color: transparent;
         }
 
-        .icon { width: 22px; height: 22px; display: inline-block; vertical-align: middle; fill: currentColor; }
+        i { width: 22px; height: 22px; display: inline-block; vertical-align: middle; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+        i svg { width: 100%; height: 100%; }
+        .icon { width: 22px; height: 22px; display: inline-block; vertical-align: middle; }
 
-        /* --- SETUP SCREEN --- */
         #setupScreen {
             display: flex; flex-direction: column;
             align-items: center; width: 100%; height: 100%;
             padding: 40px 20px; overflow-y: auto;
         }
-        
+
         .logo-box { text-align: center; margin-bottom: 30px; }
         .logo-text { font-size: 32px; font-weight: 800; letter-spacing: 1px; }
-        .logo-sub { font-size: 12px; color: #888; letter-spacing: 3px; margin-top: 5px; }
+        .logo-sub { font-size: 11px; color: #666; letter-spacing: 4px; margin-top: 6px; text-transform: uppercase; }
 
-        .reminder-container { width: 100%; max-width: 350px; margin-bottom: 25px; }
+        .reminder-container { width: 100%; max-width: 350px; margin-bottom: 20px; }
         .reminder-item {
-            background: #111; padding: 12px 16px; border-radius: 12px;
-            margin-bottom: 10px; font-size: 13px; color: #bbb;
-            display: flex; align-items: flex-start; line-height: 1.4;
-            border: 1px solid #222;
+            background: #0a0a0a; padding: 12px 14px; border-radius: 12px;
+            margin-bottom: 8px; font-size: 13px; color: #999;
+            display: flex; align-items: flex-start; gap: 10px; line-height: 1.4;
+            border: 1px solid #1a1a1a;
         }
-        .reminder-item b { color: #f39c12; margin-right: 8px; white-space: nowrap; }
+        .reminder-item .icon-emoji { font-size: 15px; flex-shrink: 0; }
 
         .section-label { 
             width: 100%; max-width: 350px; text-align: left;
-            font-size: 11px; font-weight: 800; color: #555;
-            letter-spacing: 1.5px; text-transform: uppercase;
-            margin-bottom: 10px; margin-top: 10px;
+            font-size: 11px; font-weight: 700; color: #444;
+            letter-spacing: 2px; text-transform: uppercase;
+            margin-bottom: 10px; margin-top: 14px;
         }
 
         .selector-group {
             display: flex; width: 100%; max-width: 350px;
-            background: #111; border-radius: 14px; padding: 5px;
-            margin-bottom: 15px; border: 1px solid #222;
+            background: #0a0a0a; border-radius: 14px; padding: 4px;
+            margin-bottom: 12px; border: 1px solid #1a1a1a;
         }
         .selector-btn {
-            flex: 1; padding: 12px; border: none; border-radius: 10px;
-            background: transparent; color: #666; font-size: 14px; font-weight: 600;
+            flex: 1; padding: 12px 8px; border: none; border-radius: 11px;
+            background: transparent; color: #555; font-size: 14px; font-weight: 600;
             cursor: pointer; transition: all 0.2s;
-            display: flex; align-items: center; justify-content: center;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
         }
-        .selector-btn.active { background: #222; color: #fff; }
-        .selector-btn .icon { margin-right: 8px; }
+        .selector-btn.active { background: #fff; color: #000; }
+        .selector-btn.active i { stroke: #000; }
+        .selector-btn i { stroke: #555; width: 18px; height: 18px; }
 
         .option-row {
-            width: 100%; max-width: 350px; padding: 15px;
-            background: #111; border: 1px solid #222; border-radius: 14px;
+            width: 100%; max-width: 350px; padding: 14px 16px;
+            background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 14px;
             display: flex; align-items: center; justify-content: space-between;
-            margin-bottom: 10px; cursor: pointer;
+            margin-bottom: 8px; cursor: pointer;
         }
-        .option-row span { font-size: 14px; font-weight: 600; }
+        .option-row span { font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 10px; }
+        .option-row span i { stroke: currentColor; width: 18px; height: 18px; }
 
         .switch {
-            width: 46px; height: 26px; background: #333;
-            border-radius: 13px; position: relative; cursor: pointer;
-            transition: background 0.3s;
+            width: 44px; height: 24px; background: #222;
+            border-radius: 12px; position: relative; cursor: pointer;
+            transition: background 0.3s; flex-shrink: 0;
         }
         .switch.on { background: #fff; }
         .switch::after {
             content: ''; position: absolute; top: 3px; left: 3px;
-            width: 20px; height: 20px; background: #888;
+            width: 18px; height: 18px; background: #666;
             border-radius: 50%; transition: all 0.3s;
         }
         .switch.on::after { left: 23px; background: #000; }
 
         #checkLightBtn {
-            width: 100%; max-width: 350px; padding: 15px;
-            background: #111; border: 1px dashed #f39c12; border-radius: 14px;
-            color: #f39c12; font-size: 14px; font-weight: 600;
+            width: 100%; max-width: 350px; padding: 14px;
+            background: #0a0a0a; border: 1px dashed #b8860b; border-radius: 14px;
+            color: #b8860b; font-size: 14px; font-weight: 600;
             cursor: pointer; display: flex; align-items: center;
-            justify-content: center; margin-bottom: 25px;
+            justify-content: center; gap: 10px; margin-bottom: 25px;
             transition: background 0.2s;
         }
-        #checkLightBtn:active { background: #1a1500; }
-        #checkLightBtn .icon { margin-right: 10px; }
+        #checkLightBtn:active { background: #0d0d00; }
+        #checkLightBtn i { stroke: #b8860b; }
 
         #startBtn {
             width: 100%; max-width: 350px; padding: 20px;
-            background: #fff; color: #000; border: none; border-radius: 18px;
-            font-size: 18px; font-weight: 800; cursor: pointer;
-            box-shadow: 0 10px 30px rgba(255,255,255,0.15);
-            display: flex; align-items: center; justify-content: center;
+            background: #fff; color: #000; border: none; border-radius: 16px;
+            font-size: 17px; font-weight: 800; cursor: pointer;
+            box-shadow: 0 6px 24px rgba(255,255,255,0.12);
+            display: flex; align-items: center; justify-content: center; gap: 10px;
         }
-        #startBtn .icon { fill: #000; margin-right: 12px; width: 24px; height: 24px; }
+        #startBtn i { stroke: #000; }
 
-        /* --- LIGHT CHECK MODAL --- */
+        /* Light Modal */
         #lightModal {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95); z-index: 100;
-            flex-direction: column; align-items: center; justify-content: center;
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.96);
+            z-index: 100; flex-direction: column; align-items: center; justify-content: center;
             padding: 30px;
         }
         #lightModal.show { display: flex; }
+        .light-title { font-size: 17px; font-weight: 800; margin-bottom: 28px; display: flex; align-items: center; gap: 8px; }
+        .light-title i { width: 24px; height: 24px; }
 
-        .light-title { font-size: 18px; font-weight: 800; margin-bottom: 30px; }
+        .light-bar-wrap { width: 100%; max-width: 280px; position: relative; margin-bottom: 10px; }
 
-        .light-bar-container {
-            width: 100%; max-width: 300px; height: 20px;
-            background: #222; border-radius: 10px; overflow: hidden;
-            margin-bottom: 15px; position: relative;
+        .light-bar-bg {
+            width: 100%; height: 16px; background: #1a1a1a;
+            border-radius: 8px; overflow: hidden; position: relative;
         }
         .light-bar {
-            height: 100%; width: 0%; border-radius: 10px;
-            transition: width 0.3s, background 0.3s;
+            height: 100%; width: 0%; border-radius: 8px;
+            transition: width 0.2s, background 0.3s;
+        }
+        .light-bar-track {
+            position: absolute; top: 0; left: 0; height: 100%; width: 100%;
+            border-radius: 8px;
+            background: linear-gradient(to right, #e74c3c 0%, #e74c3c 12.5%, #f39c12 12.5%, #f39c12 22.5%, #2ecc71 22.5%, #2ecc71 60%, #3498db 60%, #3498db 100%);
+            opacity: 0.15;
         }
 
-        .light-value { font-size: 28px; font-weight: 800; margin-bottom: 5px; }
-        .light-label { font-size: 14px; font-weight: 600; margin-bottom: 30px; }
-
-        .light-zone-labels {
-            width: 100%; max-width: 300px;
-            display: flex; justify-content: space-between;
-            font-size: 11px; color: #555; margin-bottom: 30px;
-        }
-
+        .light-val { font-size: 36px; font-weight: 800; margin: 12px 0 4px; }
+        .light-label { font-size: 14px; font-weight: 600; margin-bottom: 20px; text-align: center; line-height: 1.4; }
         .light-stop-btn {
-            padding: 15px 40px; background: #333; border: none;
+            padding: 14px 36px; background: #1a1a1a; border: none;
             border-radius: 14px; color: #fff; font-size: 15px;
-            font-weight: 700; cursor: pointer;
+            font-weight: 700; cursor: pointer; margin-top: 10px;
         }
-        .light-stop-btn:active { background: #555; }
 
-        /* --- APP SCREEN --- */
+        /* App Screen */
         #appScreen {
             display: none; flex-direction: column;
             align-items: center; justify-content: center;
             width: 100%; height: 100%;
         }
-        #label { font-size: 14px; font-weight: 800; color: #444; letter-spacing: 8px; margin-bottom: -15px; }
-        #rakaat { font-size: 60vw; font-weight: 800; }
-        .status-pill { background: #111; padding: 8px 24px; border-radius: 100px; color: #888; font-size: 16px; font-weight: 600; border: 1px solid #222; }
-        
+        #label { font-size: 13px; font-weight: 700; color: #333; letter-spacing: 10px; margin-bottom: -15px; text-transform: uppercase; }
+        #rakaat { font-size: 55vw; font-weight: 800; letter-spacing: -4px; }
+        .status-pill { background: #0a0a0a; padding: 8px 24px; border-radius: 100px; color: #777; font-size: 15px; font-weight: 600; border: 1px solid #1a1a1a; display: flex; align-items: center; gap: 8px; }
         #resetBtn {
             position: absolute; bottom: 40px; padding: 12px 28px;
-            background: transparent; color: #444; border: 1px solid #222;
+            background: transparent; color: #333; border: 1px solid #1a1a1a;
             border-radius: 100px; font-size: 13px; font-weight: 600; cursor: pointer;
+            display: flex; align-items: center; gap: 8px;
         }
 
         video, canvas { display: none; }
@@ -160,72 +161,67 @@
 </head>
 <body>
 
-    <svg style="display:none;">
-        <symbol id="i-female" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></symbol>
-        <symbol id="i-male" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></symbol>
-        <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></symbol>
-        <symbol id="i-sun" viewBox="0 0 24 24"><path d="M6.76 4.84l-1.8-1.79-1.41 1.41 1.79 1.79 1.42-1.41zM4 10.5H1v2h3v-2zm9-9.95h-2V3.5h2V.55zm7.45 3.91l-1.41-1.41-1.79 1.79 1.41 1.41 1.79-1.79zm-3.21 13.7l1.79 1.8 1.41-1.41-1.8-1.79-1.4 1.4zM20 10.5v2h3v-2h-3zm-8-5c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm-1 16.95h2V19.5h-2v2.95zm-7.45-3.91l1.41 1.41 1.79-1.8-1.41-1.41-1.79 1.8z"/></symbol>
-    </svg>
-
-    <!-- SETUP SCREEN -->
+    <!-- Setup Screen -->
     <div id="setupScreen">
         <div class="logo-box">
             <div class="logo-text">Rakaat</div>
-            <div class="logo-sub">AUTO DETECTOR</div>
+            <div class="logo-sub">Smart Counter</div>
         </div>
 
         <div class="reminder-container">
-            <div class="reminder-item"><b>💡</b> Gunakan di tempat dengan cahaya cukup. Hindari ruangan gelap atau silau langsung ke kamera.</div>
-            <div class="reminder-item"><b>✈️</b> Aktifkan Mode Pesawat & Jangan Ganggu agar sholat lebih khusyuk.</div>
+            <div class="reminder-item"><span class="icon-emoji">💡</span> Gunakan di tempat bercahaya cukup, hindari ruang gelap atau silau langsung ke kamera.</div>
+            <div class="reminder-item"><span class="icon-emoji">✈️</span> Aktifkan Mode Pesawat & Jangan Ganggu agar sholat lebih khusyuk.</div>
         </div>
 
-        <div class="section-label">Suara Pemandu</div>
+        <div class="section-label">Pilih Suara</div>
         <div class="selector-group">
-            <button class="selector-btn active" id="btnFemale"><svg class="icon"><use href="#i-female"></use></svg> Perempuan</button>
-            <button class="selector-btn" id="btnMale"><svg class="icon"><use href="#i-male"></use></svg> Laki-Laki</button>
+            <button class="selector-btn active" id="btnFemale"><i data-lucide="venus"></i> Perempuan</button>
+            <button class="selector-btn" id="btnMale"><i data-lucide="mars"></i> Laki-Laki</button>
         </div>
 
+        <div class="section-label">Pengaturan</div>
         <div class="option-row" id="muteToggle">
-            <span>🔊 Suara Aktif</span>
+            <span><i data-lucide="volume-2" id="volIcon"></i> Suara</span>
             <div class="switch on" id="switchSound"></div>
         </div>
 
-        <button id="checkLightBtn"><svg class="icon"><use href="#i-sun"></use></svg> Cek Pencahayaan</button>
-        <button id="startBtn"><svg class="icon"><use href="#i-play"></use></svg> MULAI SHOLAT</button>
+        <button id="checkLightBtn"><i data-lucide="sun"></i> Cek Pencahayaan</button>
+        <button id="startBtn"><i data-lucide="play"></i> MULAI SHOLAT</button>
     </div>
 
-    <!-- LIGHT CHECK MODAL -->
+    <!-- Light Check Modal -->
     <div id="lightModal">
-        <div class="light-title">☀️ Cek Pencahayaan</div>
-        <div class="light-bar-container">
-            <div class="light-bar" id="lightBar"></div>
+        <div class="light-title"><i data-lucide="sun"></i> Cek Pencahayaan</div>
+        <div class="light-bar-wrap">
+            <div class="light-bar-bg">
+                <div class="light-bar-track"></div>
+                <div class="light-bar" id="lightBar"></div>
+            </div>
         </div>
-        <div class="light-value" id="lightValue">0</div>
-        <div class="light-label" id="lightLabel">Mengukur...</div>
-        <div class="light-zone-labels">
-            <span>Gelap</span><span>Redup</span><span>Cukup</span><span>Terang</span>
-        </div>
+        <div class="light-val" id="lightValue">—</div>
+        <div class="light-label" id="lightLabel">Aktifkan kamera...</div>
         <button class="light-stop-btn" id="lightStopBtn">Tutup</button>
     </div>
 
-    <!-- APP SCREEN -->
+    <!-- App Screen -->
     <div id="appScreen">
-        <div id="label">RAKAAT</div>
+        <div id="label">Rakaat</div>
         <div id="rakaat">1</div>
-        <div class="status-pill" id="status">Sujud: 0</div>
-        <button id="resetBtn">RESET HITUNGAN</button>
+        <div class="status-pill"><i data-lucide="moon"></i> <span id="status">Sujud: 0</span></div>
+        <button id="resetBtn"><i data-lucide="rotate-ccw"></i> Reset</button>
     </div>
 
     <video id="video" autoplay playsinline></video>
     <canvas id="canvas"></canvas>
 
+    <script src="https://unpkg.com/lucide@latest"></script>
     <script>
         let sujudCount = 0, rakaatCount = 1, isDark = false, isMuted = false, voiceGender = "female", wakeLock = null;
         let lightStream = null, lightAnimFrame = null;
         const video = document.getElementById('video'), canvas = document.getElementById('canvas'), ctx = canvas.getContext('2d');
         const rakaatTeks = document.getElementById('rakaat'), statusTeks = document.getElementById('status');
 
-        // --- TTS ---
+        // TTS
         let voices = [];
         const loadV = () => { voices = window.speechSynthesis.getVoices(); };
         window.speechSynthesis.onvoiceschanged = loadV; loadV();
@@ -241,28 +237,37 @@
             window.speechSynthesis.speak(msg);
         }
 
-        // --- GENDER ---
+        // Gender
         document.getElementById('btnFemale').onclick = () => { 
             voiceGender = "female"; 
             document.getElementById('btnFemale').classList.add('active');
             document.getElementById('btnMale').classList.remove('active');
+            bicara("Suara perempuan");
         };
         document.getElementById('btnMale').onclick = () => { 
             voiceGender = "male"; 
             document.getElementById('btnMale').classList.add('active');
             document.getElementById('btnFemale').classList.remove('active');
+            bicara("Suara laki-laki");
         };
 
-        // --- MUTE TOGGLE ---
+        // Mute
         document.getElementById('muteToggle').onclick = () => {
             isMuted = !isMuted;
             const sw = document.getElementById('switchSound');
-            const label = document.querySelector('#muteToggle span');
-            if (isMuted) { sw.classList.remove('on'); label.textContent = '🔇 Suara Mati'; }
-            else { sw.classList.add('on'); label.textContent = '🔊 Suara Aktif'; }
+            const volIcon = document.getElementById('volIcon');
+            if (isMuted) {
+                sw.classList.remove('on');
+                volIcon.setAttribute('data-lucide', 'volume-x');
+            } else {
+                sw.classList.add('on');
+                volIcon.setAttribute('data-lucide', 'volume-2');
+                bicara("Suara aktif");
+            }
+            lucide.createIcons();
         };
 
-        // --- LIGHT CHECK ---
+        // Light check
         document.getElementById('checkLightBtn').onclick = async () => {
             try {
                 lightStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
@@ -283,33 +288,33 @@
             let t = 0, c = 0;
             for (let i = 0; i < d.length; i += 100) { t += (d[i] + d[i+1] + d[i+2]) / 3; c++; }
             const avg = Math.round(t / c);
-            const pct = Math.min(avg / 2, 100); // 0-200 mapped to 0-100%
+            const pct = Math.min(Math.round(avg / 1.7), 100);
 
-            const bar = document.getElementById('lightBar');
-            const val = document.getElementById('lightValue');
+            document.getElementById('lightBar').style.width = pct + '%';
+            document.getElementById('lightValue').textContent = avg;
+
             const lbl = document.getElementById('lightLabel');
-
-            bar.style.width = pct + '%';
-            val.textContent = avg;
-
             if (avg < 25) {
-                bar.style.background = '#e74c3c'; val.style.color = '#e74c3c';
-                lbl.textContent = '❌ Terlalu Gelap — Sensor tidak akan akurat';
+                document.getElementById('lightBar').style.background = '#e74c3c';
+                document.getElementById('lightValue').style.color = '#e74c3c';
+                lbl.innerHTML = '❌ Terlalu gelap — sensor tidak akurat';
                 lbl.style.color = '#e74c3c';
             } else if (avg < 45) {
-                bar.style.background = '#f39c12'; val.style.color = '#f39c12';
-                lbl.textContent = '⚠️ Masih Redup — Coba tambah cahaya';
+                document.getElementById('lightBar').style.background = '#f39c12';
+                document.getElementById('lightValue').style.color = '#f39c12';
+                lbl.innerHTML = '⚠️ Masih redup — coba tambah cahaya';
                 lbl.style.color = '#f39c12';
             } else if (avg < 120) {
-                bar.style.background = '#2ecc71'; val.style.color = '#2ecc71';
-                lbl.textContent = '✅ Cahaya Cukup — Siap digunakan!';
+                document.getElementById('lightBar').style.background = '#2ecc71';
+                document.getElementById('lightValue').style.color = '#2ecc71';
+                lbl.innerHTML = '✅ Pencahayaan cukup — siap digunakan!';
                 lbl.style.color = '#2ecc71';
             } else {
-                bar.style.background = '#3498db'; val.style.color = '#3498db';
-                lbl.textContent = '💡 Terang Sekali — Pastikan tidak silau ke kamera';
+                document.getElementById('lightBar').style.background = '#3498db';
+                document.getElementById('lightValue').style.color = '#3498db';
+                lbl.innerHTML = '💡 Terang sekali — pastikan sinar tidak langsung ke kamera';
                 lbl.style.color = '#3498db';
             }
-
             lightAnimFrame = requestAnimationFrame(measureLight);
         }
 
@@ -320,13 +325,13 @@
             document.getElementById('lightModal').classList.remove('show');
         };
 
-        // --- START SHOLAT ---
+        // Start
         async function startApp() {
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
                 video.srcObject = stream;
                 if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen();
-                if ('wakeLock' in navigator) { try { wakeLock = await navigator.wakeLock.request('screen'); } catch(e){} }
+                if ('wakeLock' in navigator) try { wakeLock = await navigator.wakeLock.request('screen'); } catch(e){}
                 document.getElementById('setupScreen').style.display = 'none';
                 document.getElementById('appScreen').style.display = 'flex';
                 video.onloadedmetadata = () => { canvas.width = video.videoWidth; canvas.height = video.videoHeight; requestAnimationFrame(detect); };
@@ -335,7 +340,7 @@
         }
         document.getElementById('startBtn').onclick = startApp;
 
-        // --- DETECTION ---
+        // Detection
         function detect() {
             if (video.paused || video.ended) return;
             ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
