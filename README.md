@@ -11,7 +11,7 @@ Aplikasi web pendeteksi rakaat & sujud otomatis menggunakan sensor bayangan kame
 ---
 
 ## ⚡ Keunggulan Utama
-- **Anti-Salah Sentuh (Zero-Touch)**: Semua tombol UI otomatis terkunci saat sholat dimulai. Tidak akan batal/tergeser jika sajadah atau sajadah lipat menyentuh layar HP.
+- **Anti-Salah Sentuh (Zero-Touch)**: Semua tombol UI otomatis terkunci saat sholat dimulai. Tidak akan batal/tergeser jika tangan atau sajadah yang terlipat menyentuh layar HP.
 - **Deteksi Otomatis**: Menghitung sujud & rakaat menggunakan sensor bayangan tubuh (kamera depan).
 - **Panduan Suara**: Suara pemandu "Sujud satu", "Rakaat X" (tersedia pilihan suara Laki-laki / Perempuan).
 - **Aman & Privat**: Kamera hanya diproses di browser lokal HP, tidak ada perekaman atau pengiriman data ke internet.
