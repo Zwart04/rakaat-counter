@@ -1,65 +1,56 @@
-# Penghitung Rakaat Sholat Pintar (Web App)
+# 🕋 Rakaat Counter: Solusi Cerdas Agar Sholat Lebih Khusyuk
 
-Aplikasi web **tanpa instalasi** yang memanfaatkan kamera depan HP sebagai sensor kegelapan untuk menghitung rakaat sholat secara otomatis. Didesain agar **tidak menyentuh layar**, sehingga tidak mengganggu gerakan sujud atau ruku.
+![Status](https://img.shields.io/badge/Status-Active-brightgreen)
+![License](https://img.shields.io/badge/License-MIT-blue)
+![Platform](https://img.shields.io/badge/Platform-Web-orange)
 
----
+Pernahkah Anda merasa ragu sudah rakaat ke berapa saat sedang sholat sendirian? **Rakaat Counter** adalah aplikasi web ringan yang dirancang khusus untuk membantu Anda mengingat jumlah rakaat dan sujud secara otomatis tanpa perlu menyentuh layar HP.
 
-## ✨ Fitur Utama
-- **Deteksi Tanpa Sentuh** – Hanya mengandalkan bayangan tubuh saat sujud.
-- **Hitung Otomatis** – 2 × sujud = 1 rakaat.
-- **Panduan Suara** – "Sujud satu" dan "Rakaat dua" (pilihan gender suara perempuan/laki‑laki).
-- **Pengaturan Suara** – Aktif/mati hanya di layar awal, tidak mengganggu saat sholat.
-- **Wake‑Lock** – Mencegah layar mati otomatis.
-- **Anti‑sentuh** – Semua elemen UI non‑interaktif saat sholat.
-- **Privasi 100 % lokal** – Kamera hanya diproses di perangkat, tidak ada rekaman atau pengiriman data.
+> 🚀 **[Coba Demo Live Disini!](https://zwart04.github.io/rakaat-counter/)**
 
 ---
 
-## 📺 Demo Langsung
-Anda dapat melihat aplikasi ini secara langsung di **GitHub Pages**:
+## 💡 Mengapa Menggunakan Rakaat Counter?
 
-> 👉 **[Demo Live – https://zwart04.github.io/rakaat-counter/](https://zwart04.github.io/rakaat-counter/)**
+Banyak aplikasi penghitung rakaat mengharuskan kita menekan layar, yang terkadang justru memecah konsentrasi atau berisiko membatalkan gerakan sholat. Aplikasi ini menggunakan pendekatan berbeda: **Sensor Cahaya via Kamera Depan.**
 
-![Demo Screenshot](https://raw.githubusercontent.com/Zwart04/rakaat-counter/main/demo.png)
-
-> *Catatan:* Gambar di atas hanyalah contoh tampilan. Saat Anda membuka link di atas, aplikasi akan meminta akses kamera dan menampilkan antarmuka sebenarnya.
-
----
-
-## 🛠️ Cara Menggunakan (Langkah‑per‑Langkah)
-1. **Buka halaman** `index.html` pada browser (atau langsung ke demo live di atas).
-2. **Izinkan akses kamera** ketika diminta.
-3. **Pilih suara** (Perempuan / Laki‑laki) dan aktifkan/ non‑aktifkan suara via tombol pada layar **Setup**.
-4. Tekan **"Mulai Sholat"**.
-5. Letakkan HP **di samping sajadah** (atau di tempat sujud) sehingga badan menutupi kamera saat sujud.
-6. Setiap sujud terdeteksi, angka **Sujud** akan bertambah, dan pada sujud ke‑2 aplikasi akan mengumumkan **Rakaat berikutnya**.
-7. Setelah selesai, tekan **Reset** untuk mengulang hitungan.
+### ✨ Fitur Unggulan:
+- **Zero-Touch Interface**: Menghitung otomatis saat Anda sujud (sensor mendeteksi bayangan tubuh).
+- **Audio Feedback**: Suara pemandu "Sujud satu", "Sujud dua", dan "Rakaat X" untuk memastikan hitungan benar.
+- **Pilihan Gender Suara**: Tersedia opsi suara Laki-laki atau Perempuan sesuai preferensi.
+- **AMOLED Dark Mode**: Hemat baterai dan nyaman di mata saat kondisi minim cahaya.
+- **Privacy First**: Tidak ada video yang direkam atau dikirim ke server. Semua pemrosesan terjadi 100% di browser Anda.
 
 ---
 
-## 🔧 Instalasi Lokal (Jika Browser Tidak Menerima `file://`)
-```bash
-# Jalankan server HTTP sederhana di Termux / Linux
-python -m http.server 8080
-```
-Kemudian buka: `http://localhost:8080` di browser HP Anda.
+## 🛠 Cara Kerja & Penggunaan
+
+1. **Akses**: Buka [Link Demo](https://zwart04.github.io/rakaat-counter/) atau file `index.html`.
+2. **Izin**: Izinkan akses kamera (hanya digunakan sebagai sensor intensitas cahaya).
+3. **Setup**: Pilih jenis suara dan tekan **Mulai Sholat**.
+4. **Posisi**: Letakkan HP di bawah dagu/area sujud (posisi landscape atau portrait).
+5. **Sholat**: Setiap kali Anda sujud dan tubuh menutupi kamera, sensor akan mendeteksi perubahan cahaya dan menambah hitungan.
 
 ---
 
-## 🔐 Privasi
-- Semua pemrosesan video **hanya di sisi klien** (browser).
-- Tidak ada rekaman atau penyimpanan gambar/video.
-- Hanya data intensitas cahaya yang dihitung secara real‑time.
+## 🏗 Teknologi yang Digunakan
+- **HTML5 & CSS3**: UI modern dengan Tailwind-style utility.
+- **Vanilla JavaScript**: Logika deteksi cahaya menggunakan `Canvas API`.
+- **Web Speech API**: Untuk *voice feedback* yang jernih.
+- **No Backend Required**: Murni aplikasi sisi klien (Client-side).
 
 ---
 
 ## 🤝 Kontribusi
-Jika ingin menambah fitur atau memperbaiki bug:
-1. Fork repository ini.
-2. Buat branch baru (`git checkout -b nama_fitur`).
-3. Push ke fork Anda dan buat Pull Request.
+Aplikasi ini bersifat **Open Source**. Kami sangat terbuka bagi siapa saja yang ingin:
+- Menambahkan fitur baru (misal: statistik sholat).
+- Memperbaiki algoritma deteksi cahaya.
+- Menambahkan dukungan bahasa atau suara baru.
 
 ---
 
 ## 📄 Lisensi
-Dilisensikan di bawah **MIT License** – bebas pakai, modifikasi, dan distribusi.
+Proyek ini dilisensikan di bawah **MIT License**. Bebas digunakan untuk keperluan pribadi maupun dikembangkan lebih lanjut.
+
+---
+*Dibuat dengan ❤️ untuk membantu sesama Muslim beribadah lebih baik.*
