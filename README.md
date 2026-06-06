@@ -8,6 +8,8 @@ Pernahkah Anda merasa ragu sudah rakaat ke berapa saat sedang sholat sendirian? 
 
 > 🚀 **[Coba Demo Live Disini!](https://zwart04.github.io/rakaat-counter/)**
 
+![Cara Penggunaan](https://raw.githubusercontent.com/Zwart04/rakaat-counter/main/demo.png)
+
 ---
 
 ## 💡 Mengapa Menggunakan Rakaat Counter?
