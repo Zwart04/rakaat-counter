@@ -1,6 +1,6 @@
 # 🕋 Rakaat Counter: Solusi buat yang suka lupa rakaat sholat
 
-![Status](https://img.shields.io/badge/version-7.3-brightgreen)
+![Status](https://img.shields.io/badge/version-1.0-brightgreen)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 ![Platform](https://img.shields.io/badge/platform-Web-orange)
 
