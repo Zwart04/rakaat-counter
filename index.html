@@ -52,6 +52,17 @@
         }
         .setup-btn:active { background: #111; border-color: #666; }
 
+        .reminder-box {
+            width: 100%; max-width: 320px;
+            padding: 12px;
+            background: #111;
+            border-left: 3px solid #f39c12;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            font-size: 13px; color: #ccc;
+            line-height: 1.5;
+        }
+
         #startBtn {
             background: #fff; color: #000; border: none;
             font-size: 18px; font-weight: 800;
@@ -114,6 +125,10 @@
             <div class="logo-sub">SMART COUNTER</div>
         </div>
         
+        <div class="reminder-box">
+            <b>⚠️ Tips:</b> Aktifkan <b>Mode Pesawat</b> & <b>Jangan Ganggu</b> agar sholat tidak terganggu notifikasi/panggilan.
+        </div>
+
         <button id="muteBtn" class="setup-btn">
             <svg class="icon" id="muteIcon"><use href="#icon-sound-on"></use></svg>
             <span id="muteText">Suara: AKTIF</span>
@@ -215,7 +230,6 @@
 
         // Start
         async function startApp() {
-            if (!confirm('🔔 Pengingat sebelum sholat:\n\n✈️ Aktifkan Mode Pesawat\n🔕 Aktifkan Jangan Ganggu (Do Not Disturb)\n\nIni mencegah notifikasi & panggilan masuk.\nKlik OK untuk mulai sholat.')) return;
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
                 video.srcObject = stream;
